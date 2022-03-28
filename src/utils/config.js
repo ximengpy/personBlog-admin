@@ -3,7 +3,7 @@
 function moduleConfig() {
   const env = process.env.NODE_ENV === 'development' ? 'dev' : 'prod';
   const api = {
-    'dev': 'http://localhost:3000/api'
+    'dev': 'http://localhost:3000'
   }
   return {
     env,

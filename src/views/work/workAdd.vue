@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="common">
     <work-edit
         @handleSubmit="handleSubmit"
         v-loading.fullscreen.lock="fullscreenLoading"
@@ -64,5 +64,8 @@
 </script>
 
 <style scoped>
-
+.common {
+  padding: 40px;
+  width: 80%;
+}
 </style>

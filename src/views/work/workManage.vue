@@ -1,29 +1,26 @@
 <template>
-  <div>
+  <div class="common">
     <el-table
         :data="workList"
         style="width: 100%">
       <el-table-column
           label="标题"
-          width="180"
           prop="title"
       >
       </el-table-column>
       <el-table-column
           label="时间"
-          width="180"
           prop="createTime"
+          show-overflow-tooltip
       >
       </el-table-column>
       <el-table-column
           label="介绍"
-          width="180"
           prop="intro"
       >
       </el-table-column>
       <el-table-column
           label="链接"
-          width="180"
           prop="link"
       >
       </el-table-column>
@@ -85,7 +82,6 @@
     methods:{
       handleEdit(index,row){
         this.defaultData = row;
-        // console.log(this.defaultData)
         this.dialogVisible = true;
       },
       handleDelete(index,row){
@@ -159,5 +155,8 @@
 </script>
 
 <style scoped>
-
+.common {
+  padding: 40px;
+  width: 80%;
+}
 </style>

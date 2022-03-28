@@ -46,16 +46,8 @@
     <el-form-item label="密码2"  prop="pwd2">
       <el-input  v-model="form.pwd2"></el-input> -->
     <el-form-item label="图片">
-
-      <el-upload
-        :action="file"
-        list-type="picture-card"
-        :on-remove="handleRemove"
-        :file-list="form.img"
-        :on-success="successFile"
-      >
-        <i class="el-icon-plus"></i>
-      </el-upload>
+      <UploadImage :src="file" @change="onUpload" width="300px" height="300px" />
+      <UploadImage v-if="file" id="img2" :src="file" @change="onUpload" width="300px" height="300px" />
     </el-form-item>
     <el-form-item>
       <el-button
@@ -67,14 +59,15 @@
 </template>
 
 <script>
-  import {baseFile} from '../../../utils/baseUrl'
-  import Upload from "../../../components/blog/Upload";
+  import UploadImage from '@/components/Upload/Image.vue';
+  import config from '@/utils/config'
   export default {
     name: "ArticleEdit",
-    components:{Upload},
+    components:{ UploadImage },
     data(){
       return {
         file: '',
+        config,
         form : {
           title : this.defaultData.title||"",
           img: this.defaultData.img || [],
@@ -112,7 +105,6 @@
       }
     },
     created() {
-      this.file = baseFile
     },
     methods:{
       toAdd() {
@@ -122,27 +114,13 @@
           info: ''
         })
       },
-      uploadSuccess(res, file, arr){
-        console.log(res, file, arr)
-        this.form.img =res
-      },
-      successFile(res, data, arr) {
-        this.form.img = arr
-        console.log(this.form.img)
-        this.form.img.map(item => {
-          item.url = item.response.surface
-        })
-      },
-      handleRemove(res, data, arr) {
-        console.log( data)
-        this.form.img = data
-        console.log(this.form.img)
+      onUpload(data) {
+        this.form.img = [data.src]
+        this.file = data.src ? config.apiUrl + data.src: data.src
       },
       onSubmit(formName){
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            // this.form.account = [{act:this.form.act1,pwd: this.form.pwd1},{act:this.form.act2,pwd: this.form.pwd2}]
-          console.log(this.form)
             this.$emit("handleSubmit", this.form);
 
           } else {

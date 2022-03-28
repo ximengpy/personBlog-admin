@@ -115,3 +115,39 @@ export function param2Obj(url) {
   })
   return obj
 }
+
+
+/**
+ * 格式化日期
+ * @param {string | number | Date} value 指定日期
+ * @param {string} format 格式化的规则
+ * @example
+ * ```js
+ * formatDate();
+ * formatDate(1603264465956);
+ * formatDate(1603264465956, 'h:m:s');
+ * formatDate(1603264465956, 'Y-M-D');
+ * formatDate(1603264465956, 'Y年-M月-D日');
+ * ```
+ */
+ export function formatDate(value = Date.now(), format = 'Y-M-D h:m:s') {
+  if (['null', null, 'undefined', undefined, ''].includes(value)) return '';
+  // ios 和 mac 系统中，带横杆的字符串日期是格式不了的，这里做一下判断处理  
+  if (typeof value === 'string' && new Date(value).toString() === 'Invalid Date') {
+    value = value.replace(/-/g, '/');
+  }
+  const formatNumber = n => `0${n}`.slice(-2);
+  const date = new Date(value);
+  const formatList = ['Y', 'M', 'D', 'h', 'm', 's'];
+  const resultList = [];
+  resultList.push(date.getFullYear().toString());
+  resultList.push(formatNumber(date.getMonth() + 1));
+  resultList.push(formatNumber(date.getDate()));
+  resultList.push(formatNumber(date.getHours()));
+  resultList.push(formatNumber(date.getMinutes()));
+  resultList.push(formatNumber(date.getSeconds()));
+  for (let i = 0; i < resultList.length; i++) {
+    format = format.replace(formatList[i], resultList[i]);
+  }
+  return format;
+}
