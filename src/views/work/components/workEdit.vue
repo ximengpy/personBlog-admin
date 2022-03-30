@@ -34,20 +34,9 @@
         </ul>
       </div>
     </el-form-item>
-    <!-- <el-form-item label="账号1"  prop="liact1nk">
-      <el-input  v-model="form.act1"></el-input>
-    </el-form-item>
-    <el-form-item label="密码1"  prop="pwd1">
-      <el-input  v-model="form.pwd1"></el-input>
-    </el-form-item>
-    <el-form-item label="账号2"  prop="act2">
-      <el-input  v-model="form.act2"></el-input>
-    </el-form-item>
-    <el-form-item label="密码2"  prop="pwd2">
-      <el-input  v-model="form.pwd2"></el-input> -->
     <el-form-item label="图片">
-      <UploadImage :src="file" @change="onUpload" width="300px" height="300px" />
-      <UploadImage v-if="file" id="img2" :src="file" @change="onUpload" width="300px" height="300px" />
+      <UploadImage :src="file" @change="onUpload" width="200px" height="100px" />
+
     </el-form-item>
     <el-form-item>
       <el-button
@@ -122,7 +111,6 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.$emit("handleSubmit", this.form);
-
           } else {
             return false;
           }
