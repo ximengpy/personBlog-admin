@@ -10,7 +10,7 @@
         </el-input>
       </el-form-item>
       <el-form-item label="日记图片">
-        <Upload @uploadSuccess="uploadSuccess"></Upload>
+        <Upload :src="form.img" @change="uploadSuccess"></Upload>
       </el-form-item>
     </el-form>
     <el-button @click="handleSubmit">发表</el-button>
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-  import Upload from "../../components/blog/Upload";
+  import Upload from "../../components/Upload/Image.vue"
   import {postDiary} from '@/api/table'
   export default {
     name: "DiaryAdd",
@@ -33,8 +33,7 @@
     },
     methods:{
       uploadSuccess(url){
-        console.log(url);
-        this.form.img = url;
+        this.form.img = url.src;
       },
       handleSubmit(){
         //这里发送ajax到后端

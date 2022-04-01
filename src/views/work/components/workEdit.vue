@@ -48,25 +48,34 @@
 </template>
 
 <script>
+  import { modifyData } from '@/utils/index'
   import UploadImage from '@/components/Upload/Image.vue';
   import config from '@/utils/config'
   export default {
     name: "ArticleEdit",
+    props: {
+      defaultData: {
+        type: Object,
+        default() {
+          return {}
+        }
+      }
+    },
     components:{ UploadImage },
     data(){
       return {
         file: '',
         config,
         form : {
-          title : this.defaultData.title||"",
-          img: this.defaultData.img || [],
-          intro: this.defaultData.intro || '',
-          link: this.defaultData.link || '',
-          account: this.defaultData.account|| [],
-          act1: this.defaultData.act1 || '',
-          act2: this.defaultData.act2 || '',
-          pwd1: this.defaultData.pwd1 || '',
-          pwd2: this.defaultData.pwd2 || ''
+          title :"",
+          img: [],
+          intro: '',
+          link:  '',
+          account:  [],
+          act1: '',
+          act2: '',
+          pwd1:  '',
+          pwd2:  ''
 
         },
         rules : {
@@ -77,24 +86,18 @@
         }
       }
     },
-    props : ["defaultData"],
     watch:{
       defaultData(val){
-        this.form = {
-          title : val.title,
-          img: val.img,
-          intro: val.intro ,
-          link: val.link ,
-          account: val.account,
-          act1: val.act1 ,
-          act2: val.act2 ,
-          pwd1: val.pwd1,
-          pwd2: val.pwd2
-        }
+        modifyData(this.form, val)
+        this.getPic(this.defaultData.img)
+
       }
     },
-    created() {
+    mounted() {
+        modifyData(this.form, this.defaultData)
+        this.getPic(this.defaultData.img)
     },
+
     methods:{
       toAdd() {
         this.form.account.push({
@@ -103,9 +106,12 @@
           info: ''
         })
       },
+      getPic(src) {
+        this.file = src ? config.apiUrl + src: src
+      },
       onUpload(data) {
-        this.form.img = [data.src]
-        this.file = data.src ? config.apiUrl + data.src: data.src
+        this.form.img = data.src
+        this.getPic(data.src)
       },
       onSubmit(formName){
         this.$refs[formName].validate((valid) => {

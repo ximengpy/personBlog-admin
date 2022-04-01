@@ -36,6 +36,14 @@ module.exports = {
       warnings: false,
       errors: true
     },
+    proxy: {
+      '/img' : {
+        target: 'http://localhost:3000',
+        pathRewrite: {
+          '^/': '/'
+        }
+      },
+    }
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that

@@ -46,7 +46,7 @@
     >
       <work-edit
           @handleSubmit="handleSubmit"
-          :default-data="defaultData"
+          :defaultData="defaultData"
       ></work-edit>
     </el-dialog>
   </div>
