@@ -1,5 +1,10 @@
 import request from '@/utils/request'
 
+// 获取标签
+export function getArticleTag() {
+  return request('POST', '/article/getInfo')
+}
+
 //发表文章
 export function postArticle({type,title,content,tag,surface}){
   return request('POST',"/article/add",{type,title,content,tag,surface});

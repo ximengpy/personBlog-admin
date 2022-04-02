@@ -16,19 +16,14 @@
     </el-form-item>
     <el-form-item label="标签"  prop="tag">
       <el-select v-model="form.tag" placeholder="请选择标签">
-        <el-option label="HTML&Css" value="HTML&Css"></el-option>
-        <el-option label="JavaScript" value="JavaScript"></el-option>
-        <el-option label="Node" value="Node"></el-option>
-        <el-option label="Vue&React" value="Vue&React"></el-option>
-        <el-option label="Other" value="Other"></el-option>
+        <el-option v-for="(item, index) in tagList" :key="index" :label="item.tag" :value="item._id"></el-option>
+  
       </el-select>
     </el-form-item>
     <el-form-item label="内容"  prop="content">
       <RichText :value="form.content" ref="richText"></RichText>
     </el-form-item>
-    <el-form-item label="封面">
-      <Upload @uploadSuccess="uploadSuccess"></Upload>
-    </el-form-item>
+
     <el-form-item>
       <el-button
           type="primary"
@@ -42,11 +37,13 @@
 
   import RichText from "../../../components/blog/RichText";
   import Upload from "../../../components/blog/Upload";
+  import { getArticleTag } from '@/api/table'
   export default {
     name: "ArticleEdit",
     components:{Upload,RichText},
     data(){
       return {
+        tagList: [],
         form : {
           title : this.defaultData.title||"",
           type : this.defaultData.type||"",
@@ -77,15 +74,14 @@
           type : this.defaultData.type,
           tag : this.defaultData.tag,
           content : this.defaultData.content,
-          surface : this.defaultData.surface
         }
-        this.changeContentAndSurface();
       }
     },
+    mounted() {
+      this._getArticleTag()
+    },
     methods:{
-      uploadSuccess(url){
-        this.form.surface = url;
-      },
+
       onSubmit(formName){
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -94,7 +90,6 @@
               type: this.form.type,
               title: this.form.title,
               tag: this.form.tag,
-              surface: this.form.surface,
               content: (function () {
                 return this.html
               }).call(this.$refs.richText)
@@ -105,8 +100,11 @@
           }
         });
       },
-      changeContentAndSurface(){
-
+      async _getArticleTag() {
+        const res = await getArticleTag()
+        if(!res.code) {
+          this.tagList = res.data
+        }
       }
     },
   }
