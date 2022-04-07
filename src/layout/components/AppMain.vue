@@ -1,7 +1,7 @@
 <template>
   <section class="app-main">
     <transition name="fade-transform" mode="out-in">
-      <router-view :key="key"  v-if="isRouterlive" />
+      <router-view :key="key"  />
     </transition>
   </section>
 </template>
@@ -16,21 +16,11 @@ export default {
   },
   data() {
     return {
-      isRouterlive: true,
     }
   },
-  provide () {
-    return {
-      reload: this.reload
-    }
-  },
+
   methods: {
-    reload () {
-      this.isRouterlive = false
-      this.$nextTick(function () {
-        this.isRouterlive = true
-      })
-    }
+
   }
 }
 </script>

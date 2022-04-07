@@ -6,22 +6,22 @@
       :rules="rules"
   >
     <el-form-item label="分类" prop="type">
-      <el-select v-model="form.type" placeholder="请选择分类">
+      <el-select class="w_300" v-model="form.type" placeholder="请选择分类">
         <el-option label="原创" value="原创"></el-option>
         <el-option label="转载" value="转载"></el-option>
       </el-select>
     </el-form-item>
     <el-form-item label="标题" prop="title">
-      <el-input v-model="form.title"></el-input>
+      <el-input class="w_300" v-model="form.title"></el-input>
     </el-form-item>
     <el-form-item label="标签"  prop="tag">
-      <el-select v-model="form.tag" placeholder="请选择标签">
+      <el-select class="w_300" v-model="form.tag" placeholder="请选择标签">
         <el-option v-for="(item, index) in tagList" :key="index" :label="item.tag" :value="item._id"></el-option>
   
       </el-select>
     </el-form-item>
     <el-form-item label="内容"  prop="content">
-      <RichText :value="form.content" ref="richText"></RichText>
+      <RichText v-model="form.content" ref="richText"></RichText>
     </el-form-item>
 
     <el-form-item>
@@ -37,19 +37,20 @@
 
   import RichText from "../../../components/blog/RichText";
   import Upload from "../../../components/blog/Upload";
-  import { getArticleTag } from '@/api/table'
+  import { getArticleTag, postArticle } from '@/api/table'
+  import { modifyData } from '@/utils/index'
   export default {
     name: "ArticleEdit",
     components:{Upload,RichText},
+    props : ["defaultData"],
     data(){
       return {
         tagList: [],
         form : {
-          title : this.defaultData.title||"",
-          type : this.defaultData.type||"",
-          tag : this.defaultData.tag||"",
-          content : this.defaultData.content||"",
-          surface : this.defaultData.surface||""
+          title : "",
+          type : "",
+          tag : "",
+          content : "",
         },
         rules : {
           type : [{ required: true, message: '请选择type' }],
@@ -66,18 +67,13 @@
         }
       }
     },
-    props : ["defaultData"],
     watch:{
-      defaultData(){
-        this.form = {
-          title : this.defaultData.title,
-          type : this.defaultData.type,
-          tag : this.defaultData.tag,
-          content : this.defaultData.content,
-        }
+      defaultData(val){
+        modifyData(this.form, val)
       }
     },
     mounted() {
+      modifyData(this.form, this.defaultData)
       this._getArticleTag()
     },
     methods:{
@@ -85,21 +81,21 @@
       onSubmit(formName){
         this.$refs[formName].validate((valid) => {
           if (valid) {
-
-            this.$emit("handleSubmit", {
-              type: this.form.type,
-              title: this.form.title,
-              tag: this.form.tag,
-              content: (function () {
-                return this.html
-              }).call(this.$refs.richText)
-            });
-
+            this.sendArticle()
           } else {
             return false;
           }
         });
       },
+      //发表发送请求
+      async sendArticle() {
+        const res = await postArticle(this.form)
+        if(!res.code) {
+          this.$message.success('发表成功')
+          this.$emit('success')
+        }
+      },
+      //获取tag
       async _getArticleTag() {
         const res = await getArticleTag()
         if(!res.code) {
@@ -111,5 +107,7 @@
 </script>
 
 <style scoped>
-
+.w_300 {
+  width: 300px;
+}
 </style>

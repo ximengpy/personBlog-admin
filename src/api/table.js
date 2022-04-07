@@ -6,21 +6,20 @@ export function getArticleTag() {
 }
 
 //发表文章
-export function postArticle({type,title,content,tag,surface}){
-  return request('POST',"/article/add",{type,title,content,tag,surface});
+export function postArticle(params){
+  return request('POST',"/article/add",params, {showTip: true});
 }
 
-/*请求文章*/
-export function getArticle(skip=0,limit=5) {
-  return request('GET',"/article/get"+`?skip=${skip}&limit=${limit}`);
+//获取文章列表
+export function getArticleList(data) {
+  return request('POST', '/article/getshow', data)
 }
-
 /*删除文章*/
 export function deleteArticle(_id) {
   if(!_id){
     return Promise.reject();
   }
-  return request('POST',"/article/delete",{_id});
+  return request('POST',"/article/delete",{_id}, {showTip: true});
 }
 
 /*更新文章*/

@@ -21,13 +21,28 @@
       return {
         content:'', // 输入的markdown
         html:'',    // 及时转的html
+        flag: false, //设置只监听一次
       }
     },
+    watch: {
+      value: {
+        handler(val) {
+          if( !this.flag) {
+            console.log( 55555, val)
+            this.content  =val
+            this.flag = true
+          }
+          
+        },
+      }
+    },
+
     props:["value"],
     methods: {
       change(value, render){
             // render 为 markdown 解析后的结果[html]
             this.html = render;
+            this.$emit('input',this.html)
         },
     }
   }
