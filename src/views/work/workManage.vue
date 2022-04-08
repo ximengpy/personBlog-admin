@@ -78,7 +78,6 @@
         PaginationSize : 5
       }
     },
-    inject: ['reload'],
     methods:{
       handleEdit(index,row){
         this.defaultData = row;
@@ -113,7 +112,8 @@
                 type: 'success',
                 duration : 2000
               });
-              this.reload()
+              this.handleClose()
+              this.changeworkList()
               // setTimeout(()=>{
               //   this.changeworkList();
               //   this.handleClose();

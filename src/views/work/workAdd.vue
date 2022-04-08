@@ -21,7 +21,6 @@
         fullscreenLoading : false
       }
     },
-    inject: ['reload'],
     methods:{
       handleSubmit(data){
         console.log(data)
@@ -32,7 +31,6 @@
             type: 'success',
             duration : 2000
           });
-          this.reload()
           // setTimeout(()=>{
           //   this.fullscreenLoading = false;
           //   window.location.reload();

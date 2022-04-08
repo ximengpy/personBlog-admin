@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="article-manage">
     <el-table
       :data="articleList"
       style="width: 100%">
@@ -50,7 +50,7 @@
         </template>
       </el-table-column>
     </el-table>
-
+    <Pagination class="mgt_30" :pageInfo ="pages" @change="getData" />
     <el-dialog
         title="提示"
         :visible.sync="dialogVisible"
@@ -67,7 +67,7 @@
 </template>
 
 <script>
-  import Pagination from "../../components/blog/pagination";
+  import Pagination from "@/components/Pagination/index.vue";
   import {
     getArticleList,
     deleteArticle,
@@ -134,6 +134,12 @@
 
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+.article-manage {
+  padding: 20px;
+  width: 60%;
+  .mgt_30 {
+    margin-top: 30px;
+  }
+}
 </style>
